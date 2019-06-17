@@ -1,0 +1,16 @@
+Welcome to djangorestframework-mvt's documentation!
+===================================================
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+
+Reference
+=========
+.. automodule:: rest_framework_mvt.managers
+    :members:
+.. automodule:: rest_framework_mvt.views
+    :members:
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents

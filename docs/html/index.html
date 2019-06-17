@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Welcome to djangorestframework-mvt’s documentation! &mdash; djangorestframework-mvt v0.2 Documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> djangorestframework-mvt
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to djangorestframework-mvt’s documentation!</a></li>
+<li><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+<li><a class="reference internal" href="#module-rest_framework_mvt.managers">Source Documentation</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">djangorestframework-mvt</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Welcome to djangorestframework-mvt’s documentation!</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="welcome-to-djangorestframework-mvt-s-documentation">
+<h1>Welcome to djangorestframework-mvt’s documentation!<a class="headerlink" href="#welcome-to-djangorestframework-mvt-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="system-requirements">
+<h1>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://gdal.org">GDAL &gt;= 2.1</a></p></li>
+<li><p><a class="reference external" href="https://www.postgresql.org/download/">Postgres &gt;= 10</a></p></li>
+<li><p><a class="reference external" href="http://postgis.net/install/">PostGIS &gt;= 2.4.0</a></p></li>
+<li><p>Python &gt;= 3.0</p></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install djangorestframework-mvt
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>In a project’s <cite>models.py</cite> file add a <cite>MVTManager</cite> to a model
+to be served as Mapbox Vector Tiles.  For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.gis.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">rest_framework_mvt.managers</span> <span class="kn">import</span> <span class="n">MVTManager</span>
+
+<span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PointField</span><span class="p">()</span>
+    <span class="n">my_column</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">()</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">()</span>
+    <span class="n">vector_tiles</span> <span class="o">=</span> <span class="n">MVTManager</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <cite>geo_col</cite> keyword argument specifies the name of the PostGIS
+geometry typed column.</p>
+<p>In the project’s <cite>urls.py</cite>, create a view linked to a model using
+a <cite>MVTManager</cite> with the <cite>mvt_view_factory</cite> function. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework_mvt.views</span> <span class="kn">import</span> <span class="n">mvt_view_factory</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;api/v1/data/example.mvt/&quot;</span><span class="p">,</span> <span class="n">mvt_view_factory</span><span class="p">(</span><span class="n">Example</span><span class="p">)),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The following requests should now be enabled:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">api/v1/data/example.mvt?tile=1/0/0</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">api/v1/data/example.mvt?tile=1/0/0&amp;my_column=foo</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">api/v1/data/example.mvt?tile=1/0/0&amp;my_column=foo&amp;limit=10</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">api/v1/data/example.mvt?tile=1/0/0&amp;my_column=foo&amp;limit=10&amp;offset=10</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.mapbox.com/vector-tiles/reference/">Mapbox Vector Tile Introduction</a></p></li>
+<li><p><a class="reference external" href="https://github.com/mapbox/vector-tile-spec/tree/master/2.1/">Mapbox Vector Tile v2.1 Specification</a></p></li>
+<li><p><a class="reference external" href="https://developers.google.com/protocol-buffers/">Google Protocol Buffers</a></p></li>
+<li><p><a class="reference external" href="https://postgis.net/docs/ST_AsMVT.html">PostGIS ST_AsMVT</a></p></li>
+<li><p>If deploying to AWS RDS Postgres, version 10.5+ is required.  See <a class="reference external" href="https://forums.aws.amazon.com/thread.jspa?threadID=277371">here</a> for more info.</p></li>
+</ul>
+</div>
+<div class="section" id="module-rest_framework_mvt.managers">
+<span id="source-documentation"></span><h1>Source Documentation<a class="headerlink" href="#module-rest_framework_mvt.managers" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="rest_framework_mvt.managers.MVTManager">
+<em class="property">class </em><code class="sig-prename descclassname">rest_framework_mvt.managers.</code><code class="sig-name descname">MVTManager</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">geo_col='geom'</em>, <em class="sig-param">source_name=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_mvt.managers.MVTManager" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geo_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Column name with the geometry. The default is “geom”.</p></li>
+<li><p><strong>source_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Connection source to use.  If not provided the app’s default
+connection is used.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="rest_framework_mvt.managers.MVTManager.intersect">
+<code class="sig-name descname">intersect</code><span class="sig-paren">(</span><em class="sig-param">bbox=''</em>, <em class="sig-param">limit=-1</em>, <em class="sig-param">offset=0</em>, <em class="sig-param">filters={}</em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_mvt.managers.MVTManager.intersect" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bbox</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A string representing a bounding box, e.g., ‘-90,29,-89,35’.</p></li>
+<li><p><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of entries to include in the result.  The default
+is -1 (includes all results).</p></li>
+<li><p><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Index to start collecting entries from.  Index size is the limit
+size.  The default is 0.</p></li>
+<li><p><strong>filters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – The keys represent column names and the values represent column
+values to filter on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bytes representing a Google Protobuf encoded Mapbox Vector Tile.  The
+vector tile will store each applicable row from the database as a
+feature.  Applicable rows fall within the passed in bbox.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)">bytes</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValidationError</strong> – If filters include keys or values not accepted by
+    the manager’s model.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The sql execution follows the guidelines from Django below.  As suggested, the executed
+query string does NOT contain quoted parameters.</p>
+<p><a class="reference external" href="https://docs.djangoproject.com/en/2.2/topics/db/sql/#performing-raw-queries">https://docs.djangoproject.com/en/2.2/topics/db/sql/#performing-raw-queries</a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-rest_framework_mvt.views"></span><dl class="class">
+<dt id="rest_framework_mvt.views.BaseMVTView">
+<em class="property">class </em><code class="sig-prename descclassname">rest_framework_mvt.views.</code><code class="sig-name descname">BaseMVTView</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_mvt.views.BaseMVTView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base view for serving a model as a Mapbox Vector Tile given X/Y/Z tile constraints.</p>
+<dl class="method">
+<dt id="rest_framework_mvt.views.BaseMVTView.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_mvt.views.BaseMVTView.get" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>request</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.request.Request</span></code>) – Standard DRF request object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Standard DRF response object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.response.Response</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="rest_framework_mvt.views.mvt_view_factory">
+<code class="sig-prename descclassname">rest_framework_mvt.views.</code><code class="sig-name descname">mvt_view_factory</code><span class="sig-paren">(</span><em class="sig-param">model_class</em>, <em class="sig-param">geom_col='geom'</em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_mvt.views.mvt_view_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an MVTView that serves Mapbox Vector Tiles for the
+given model and geom column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_class</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.gis.db.models.Model</span></code>) – A GeoDjango model</p></li>
+<li><p><strong>geom_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A string representing the column name containing
+PostGIS geometry types.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A subclass of <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework_mvt.views.MVTView</span></code> with its geom_col
+and model set to the function’s passed in values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework_mvt.views.MVTView</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Corteva Agriscience™ Data Engineering
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+[SIMILARITIES]
+min-similarity-lines=10
+# similarity because of https://github.com/PyCQA/pylint/issues/2019
+ignore-imports=yes
+
+[FORMATTING]
+max-line-length=100
+
+[MESSAGES CONTROL]
+disable = too-few-public-methods,
+          missing-docstring,
+          bad-continuation,
+          dangerous-default-value,
+          protected-access,
