@@ -26,8 +26,7 @@ setup(
         "Topic :: Scientific/Engineering :: GIS",
     ],
     description="""
-        Django REST Framework utility for creating views that serialize model data
-        to Google Protobuf encoded Map Box Vector Tiles via Postgres.
+        A Django REST Framework extension for creating views that serialize model data to Google Protobuf encoded Map Box Vector Tiles via Postgres.
     """,
     include_package_data=True,
     install_requires=[
