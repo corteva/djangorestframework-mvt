@@ -74,9 +74,10 @@ class MVTManager(models.Manager):
         """
         table = self.model._meta.db_table.replace('"', "")
         select_statement = self._create_select_statement()
-        parameterized_where_clause, where_clause_parameters = self._create_where_clause_with_params(
-            table, filters
-        )
+        (
+            parameterized_where_clause,
+            where_clause_parameters,
+        ) = self._create_where_clause_with_params(table, filters)
         query = f"""
         SELECT NULL AS id, ST_AsMVT(q, 'default', 4096, 'mvt_geom')
             FROM (SELECT {select_statement}
@@ -135,6 +136,7 @@ class MVTManager(models.Manager):
             (django.db.connection):
             The 'default' Django database connection if source_name is not defined on the instance.
         """
+        # pylint: disable=import-outside-toplevel
         from django.db import connection, connections
 
         return connection if self.source_name is None else connections[self.source_name]
