@@ -31,7 +31,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "coreapi>=2.3,<3.0",
-        "django>=2.1,<3.0",
+        "django>=2.2.9,<3.0",
         "djangorestframework>=3.9,<4.0",
         "djangorestframework-gis>=0.14,<1.0",
         "django-filter>=2.1.0,<3.0",
