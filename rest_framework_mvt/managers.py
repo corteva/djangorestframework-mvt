@@ -106,7 +106,7 @@ class MVTManager(models.Manager):
             sql, params = self.filter(**filters).query.sql_with_params()
         except FieldError as error:
             raise ValidationError(str(error))
-        extra_wheres = " AND " + sql.split("WHERE")[1].strip()[1:-1] if params else ""
+        extra_wheres = " AND " + sql.split("WHERE")[1].strip() if params else ""
         where_clause = (
             f"ST_Intersects({table}.{self.geo_col}, "
             f"ST_SetSRID(ST_GeomFromText(%s), 4326)){extra_wheres}"

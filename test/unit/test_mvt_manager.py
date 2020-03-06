@@ -118,7 +118,7 @@ def test_mvt_manager_build_query__filter(get_conn, only, orm_filter, mvt_manager
                 ST_AsMVTGeom(ST_Transform(test_table.jazzy_geo, 3857),
                 ST_Transform(ST_SetSRID(ST_GeomFromText(%s), 4326), 3857), 4096, 0, false) AS mvt_geom
             FROM test_table
-            WHERE ST_Intersects(test_table.jazzy_geo, ST_SetSRID(ST_GeomFromText(%s), 4326)) AND city = %s
+            WHERE ST_Intersects(test_table.jazzy_geo, ST_SetSRID(ST_GeomFromText(%s), 4326)) AND (city = %s)
             LIMIT %s
             OFFSET %s) AS q;
     """.strip()
@@ -149,7 +149,7 @@ def test_mvt_manager_build_query__multiple_filters(
                 ST_AsMVTGeom(ST_Transform(test_table.jazzy_geo, 3857),
                 ST_Transform(ST_SetSRID(ST_GeomFromText(%s), 4326), 3857), 4096, 0, false) AS mvt_geom
             FROM test_table
-            WHERE ST_Intersects(test_table.jazzy_geo, ST_SetSRID(ST_GeomFromText(%s), 4326)) AND city = %s AND other_column = %s
+            WHERE ST_Intersects(test_table.jazzy_geo, ST_SetSRID(ST_GeomFromText(%s), 4326)) AND (city = %s AND other_column = %s)
             LIMIT %s
             OFFSET %s) AS q;
     """.strip()
@@ -179,3 +179,34 @@ def test_mvt_manager_build_query__validation_error(
 
     with pytest.raises(ValidationError) as e:
         query = mvt_manager._build_query(filters={"not_a_filter": "oops"})
+
+
+@patch("rest_framework_mvt.managers.MVTManager.filter")
+@patch("rest_framework_mvt.managers.MVTManager._get_connection")
+def test_mvt_manager_create_where_clause_with_params(get_conn, orm_filter, mvt_manager):
+    query_filter = MagicMock()
+    query_filter.sql_with_params.return_value = (
+        (
+            'SELECT "my_schema"."my_table"."id", "my_schema"."my_table"."foreign_key_id", '
+            '"my_schema"."my_table"."col_1", "my_schema"."my_table"."geom"::bytea FROM '
+            '"my_schema"."my_table" WHERE ("my_schema"."my_table"."col_1" = %s AND '
+            '"my_schema"."my_table"."foreign_key_id" = %s)'
+        ),
+        ("filter_1", 1),
+    )
+    orm_filter.return_value = MagicMock(query=query_filter)
+
+    (
+        parameterized_where_clause,
+        where_clause_parameters,
+    ) = mvt_manager._create_where_clause_with_params(
+        "my_schema.my_table", {"col_1": "filter_1", "foreign_key": 1}
+    )
+
+    orm_filter.assert_called_once_with(col_1="filter_1", foreign_key=1)
+    query_filter.sql_with_params.assert_called_once()
+    assert parameterized_where_clause == (
+        "ST_Intersects(my_schema.my_table.jazzy_geo, ST_SetSRID(ST_GeomFromText(%s), 4326)) "
+        'AND ("my_schema"."my_table"."col_1" = %s AND "my_schema"."my_table"."foreign_key_id" = %s)'
+    )
+    assert where_clause_parameters == ["filter_1", 1]
