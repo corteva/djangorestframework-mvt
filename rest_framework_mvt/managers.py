@@ -57,7 +57,7 @@ class MVTManager(models.Manager):
         for field in self.model._meta.get_fields():
             if hasattr(field, "get_attname_column"):
                 column_name = field.get_attname_column()[1]
-                if column_name != self.geo_col:
+                if column_name and column_name != self.geo_col:
                     columns.append(column_name)
         return columns
 
