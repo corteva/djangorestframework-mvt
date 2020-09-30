@@ -12,7 +12,7 @@ class MVTManager(models.Manager):
     """
 
     def __init__(self, *args, geo_col="geom", source_name=None, **kwargs):
-        super(MVTManager, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.geo_col = geo_col
         self.source_name = source_name
 
@@ -105,7 +105,7 @@ class MVTManager(models.Manager):
         try:
             sql, params = self.filter(**filters).query.sql_with_params()
         except FieldError as error:
-            raise ValidationError(str(error))
+            raise ValidationError(str(error)) from error
         extra_wheres = " AND " + sql.split("WHERE")[1].strip() if params else ""
         where_clause = (
             f"ST_Intersects({table}.{self.geo_col}, "

@@ -70,7 +70,7 @@ class BaseMVTView(APIView):
             except ValueError as value_error:
                 raise ValidationError(
                     "Query param validation error: " + str(value_error)
-                )
+                ) from value_error
 
         return limit, offset
 
