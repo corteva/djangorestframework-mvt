@@ -36,6 +36,9 @@ def mvt_manager_no_col():
             get_attname_column=MagicMock(return_value=("jazzy_geo", "jazzy_geo"))
         ),
         MagicMock(get_attname_column=MagicMock(return_value=("city", "city"))),
+        MagicMock(
+            get_attname_column=MagicMock(return_value=("generic_relation", None))
+        ),
     ]
     meta.get_fields.return_value = fields
     mvt_manager_no_col.model = MagicMock(_meta=meta)
@@ -99,6 +102,7 @@ def test_mvt_manager_build_query__no_geo_col(get_conn, only, mvt_manager_no_col)
 
     assert expected_query == query
     assert expected_parameters == parameters
+    only.assert_called_once_with("other_column", "jazzy_geo", "city")
 
 
 @patch("rest_framework_mvt.managers.MVTManager.filter")
