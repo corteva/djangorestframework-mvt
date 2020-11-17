@@ -49,18 +49,6 @@ class MVTManager(models.Manager):
             mvt = cursor.fetchall()[-1][-1]  # should always return one tile on success
         return mvt
 
-    def _get_non_geom_columns(self):
-        """
-        Retrieves all table columns that are NOT the defined geometry column
-        """
-        columns = []
-        for field in self.model._meta.get_fields():
-            if hasattr(field, "get_attname_column"):
-                column_name = field.get_attname_column()[1]
-                if column_name and column_name != self.geo_col:
-                    columns.append(column_name)
-        return columns
-
     def _build_query(self, filters={}):
         """
         Args:
@@ -124,8 +112,7 @@ class MVTManager(models.Manager):
             str:
             A string representing a parameterized SQL query SELECT statement.
         """
-        columns = self._get_non_geom_columns()
-        sql, _ = self.only(*columns).query.sql_with_params()
+        sql, _ = self.defer(self.geo_col).query.sql_with_params()
         select_sql = sql.split("FROM")[0].lstrip("SELECT ").strip() + ","
         return select_sql
 
