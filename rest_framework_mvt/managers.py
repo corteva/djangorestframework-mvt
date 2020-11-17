@@ -101,6 +101,9 @@ class MVTManager(models.Manager):
         )
         return where_clause, list(params)
 
+    def get_model(self):
+        return self
+
     def _create_select_statement(self):
         """
         Create a SELECT statement that only includes columns defined on the
@@ -112,7 +115,7 @@ class MVTManager(models.Manager):
             str:
             A string representing a parameterized SQL query SELECT statement.
         """
-        sql, _ = self.defer(self.geo_col).query.sql_with_params()
+        sql, _ = self.get_model().defer(self.geo_col).query.sql_with_params()
         select_sql = sql.split("FROM")[0].lstrip("SELECT ").strip() + ","
         return select_sql
 
