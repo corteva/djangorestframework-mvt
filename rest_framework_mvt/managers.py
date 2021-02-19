@@ -108,7 +108,7 @@ class MVTManager(models.Manager):
             raise ValidationError(str(error)) from error
         extra_wheres = " AND " + sql.split("WHERE")[1].strip() if params else ""
         where_clause = (
-            f"ST_Intersects({table}.{self.geo_col}, "
+            f"ST_Intersects(ST_Transform({table}.{self.geo_col}, 4326), "
             f"ST_SetSRID(ST_GeomFromText(%s), 4326)){extra_wheres}"
         )
         return where_clause, list(params)
