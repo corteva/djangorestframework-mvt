@@ -25,6 +25,8 @@ class BaseMVTView(APIView):
             :py:class:`rest_framework.response.Response`:  Standard DRF response object
         """
         params = request.GET.dict()
+        if 'z' in kwargs and 'x' in kwargs and 'y' in kwargs:
+            params["tile"] = "{z}/{x}/{y}".format(**kwargs)
         if params.pop("tile", None) is not None:
             try:
                 limit, offset = self._validate_paginate(
