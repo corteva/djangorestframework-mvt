@@ -16,7 +16,7 @@ class MVTManager(models.Manager):
         self.geo_col = geo_col
         self.source_name = source_name
 
-    def intersect(self, bbox="", limit=-1, offset=0, filters={}):
+    def intersect(self, xyz, limit=-1, offset=0, filters={}):
         """
         Args:
             bbox (str): A string representing a bounding box, e.g., '-90,29,-89,35'.
@@ -45,7 +45,19 @@ class MVTManager(models.Manager):
         limit = "ALL" if limit == -1 else limit
         query, parameters = self._build_query(filters=filters)
         with self._get_connection().cursor() as cursor:
-            cursor.execute(query, [str(bbox), str(bbox)] + parameters + [limit, offset])
+            cursor.execute(
+                query,
+                [
+                    str(xyz[2]),
+                    str(xyz[0]),
+                    str(xyz[1]),
+                    str(xyz[2]),
+                    str(xyz[0]),
+                    str(xyz[1]),
+                ]
+                + parameters
+                + [limit, offset],
+            )
             mvt = cursor.fetchall()[-1][-1]  # should always return one tile on success
         return mvt
 
@@ -82,7 +94,7 @@ class MVTManager(models.Manager):
         SELECT NULL AS id, ST_AsMVT(q, 'default', 4096, 'mvt_geom')
             FROM (SELECT {select_statement}
                 ST_AsMVTGeom(ST_Transform({table}.{self.geo_col}, 3857),
-                ST_Transform(ST_SetSRID(ST_GeomFromText(%s), 4326), 3857), 4096, 0, false) AS mvt_geom
+                ST_Transform(ST_Transform(ST_TileEnvelope(%s, %s, %s), 4326), 3857), 4096, 0, false) AS mvt_geom
             FROM {table}
             WHERE {parameterized_where_clause}
             LIMIT %s
@@ -109,7 +121,7 @@ class MVTManager(models.Manager):
         extra_wheres = " AND " + sql.split("WHERE")[1].strip() if params else ""
         where_clause = (
             f"ST_Intersects(ST_Transform({table}.{self.geo_col}, 4326), "
-            f"ST_SetSRID(ST_GeomFromText(%s), 4326)){extra_wheres}"
+            f"ST_Transform(ST_TileEnvelope(%s, %s, %s), 4326)){extra_wheres}"
         )
         return where_clause, list(params)
 
