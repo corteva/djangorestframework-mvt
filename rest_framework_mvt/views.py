@@ -24,21 +24,21 @@ class BaseMVTView(APIView):
             :py:class:`rest_framework.response.Response`:  Standard DRF response object
         """
         params = request.GET.dict()
-        x = y = z = None
+        tilex = tiley = tilez = None
 
         # zxy may come from path or parameters.
         if 'z' in kwargs and 'x' in kwargs and 'y' in kwargs:
-            x = kwargs['x']
-            y = kwargs['y']
-            z = kwargs['z']
+            tilex = kwargs['x']
+            tiley = kwargs['y']
+            tilez = kwargs['z']
         if 'tile' in params:
             zxy = params.pop('tile', '').split('/')
             if len(zxy) == 3:
-                z = zxy[0]
-                x = zxy[1]
-                y = zxy[2]
+                tilez = zxy[0]
+                tilex = zxy[1]
+                tiley = zxy[2]
 
-        if z and x and y:
+        if tilez and tilex and tiley:
             try:
                 limit, offset = self._validate_paginate(
                     params.pop("limit", None), params.pop("offset", None)
@@ -47,7 +47,12 @@ class BaseMVTView(APIView):
                 limit, offset = None, None
             try:
                 mvt = self.model.vector_tiles.intersect(
-                    x=x, y=y, z=z, limit=limit, offset=offset, filters=params
+                    tilex=tilex,
+                    tiley=tiley,
+                    tilez=tilez,
+                    limit=limit,
+                    offset=offset,
+                    filters=params
                 )
                 status = 200 if mvt else 204
             except ValidationError:
