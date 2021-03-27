@@ -51,7 +51,7 @@ def test_mvt_manager_intersect__calls__build_query(get_conn, mvt_manager):
     mvt_manager._build_query = MagicMock()
     mvt_manager._build_query.return_value = ("foo", ["bar"])
 
-    mvt_manager.intersect(bbox="", limit=10, offset=7)
+    mvt_manager.intersect(0, 0, 0, limit=10, offset=7)
 
     mvt_manager._build_query.assert_called_once_with(filters={})
 
@@ -66,9 +66,9 @@ def test_mvt_manager_build_query__all(get_conn, only, mvt_manager):
         SELECT NULL AS id, ST_AsMVT(q, 'default', 4096, 'mvt_geom')
             FROM (SELECT other_column, city,
                 ST_AsMVTGeom(ST_Transform(test_table.jazzy_geo, 3857),
-                ST_Transform(ST_SetSRID(ST_GeomFromText(%s), 4326), 3857), 4096, 0, false) AS mvt_geom
+                ST_Transform(ST_Transform(ST_TileEnvelope(%s, %s, %s), 4326), 3857), 4096, 0, false) AS mvt_geom
             FROM test_table
-            WHERE ST_Intersects(ST_Transform(test_table.jazzy_geo, 4326), ST_SetSRID(ST_GeomFromText(%s), 4326))
+            WHERE ST_Intersects(ST_Transform(test_table.jazzy_geo, 4326), ST_Transform(ST_TileEnvelope(%s, %s, %s), 4326))
             LIMIT %s
             OFFSET %s) AS q;
     """.strip()
@@ -90,9 +90,9 @@ def test_mvt_manager_build_query__no_geo_col(get_conn, only, mvt_manager_no_col)
         SELECT NULL AS id, ST_AsMVT(q, 'default', 4096, 'mvt_geom')
             FROM (SELECT other_column, city,
                 ST_AsMVTGeom(ST_Transform(test_table.geom, 3857),
-                ST_Transform(ST_SetSRID(ST_GeomFromText(%s), 4326), 3857), 4096, 0, false) AS mvt_geom
+                ST_Transform(ST_Transform(ST_TileEnvelope(%s, %s, %s), 4326), 3857), 4096, 0, false) AS mvt_geom
             FROM test_table
-            WHERE ST_Intersects(ST_Transform(test_table.geom, 4326), ST_SetSRID(ST_GeomFromText(%s), 4326))
+            WHERE ST_Intersects(ST_Transform(test_table.geom, 4326), ST_Transform(ST_TileEnvelope(%s, %s, %s), 4326))
             LIMIT %s
             OFFSET %s) AS q;
     """.strip()
@@ -120,9 +120,9 @@ def test_mvt_manager_build_query__filter(get_conn, only, orm_filter, mvt_manager
         SELECT NULL AS id, ST_AsMVT(q, 'default', 4096, 'mvt_geom')
             FROM (SELECT other_column, city,
                 ST_AsMVTGeom(ST_Transform(test_table.jazzy_geo, 3857),
-                ST_Transform(ST_SetSRID(ST_GeomFromText(%s), 4326), 3857), 4096, 0, false) AS mvt_geom
+                ST_Transform(ST_Transform(ST_TileEnvelope(%s, %s, %s), 4326), 3857), 4096, 0, false) AS mvt_geom
             FROM test_table
-            WHERE ST_Intersects(ST_Transform(test_table.jazzy_geo, 4326), ST_SetSRID(ST_GeomFromText(%s), 4326)) AND (city = %s)
+            WHERE ST_Intersects(ST_Transform(test_table.jazzy_geo, 4326), ST_Transform(ST_TileEnvelope(%s, %s, %s), 4326)) AND (city = %s)
             LIMIT %s
             OFFSET %s) AS q;
     """.strip()
@@ -151,9 +151,9 @@ def test_mvt_manager_build_query__multiple_filters(
         SELECT NULL AS id, ST_AsMVT(q, 'default', 4096, 'mvt_geom')
             FROM (SELECT other_column, city,
                 ST_AsMVTGeom(ST_Transform(test_table.jazzy_geo, 3857),
-                ST_Transform(ST_SetSRID(ST_GeomFromText(%s), 4326), 3857), 4096, 0, false) AS mvt_geom
+                ST_Transform(ST_Transform(ST_TileEnvelope(%s, %s, %s), 4326), 3857), 4096, 0, false) AS mvt_geom
             FROM test_table
-            WHERE ST_Intersects(ST_Transform(test_table.jazzy_geo, 4326), ST_SetSRID(ST_GeomFromText(%s), 4326)) AND (city = %s AND other_column = %s)
+            WHERE ST_Intersects(ST_Transform(test_table.jazzy_geo, 4326), ST_Transform(ST_TileEnvelope(%s, %s, %s), 4326)) AND (city = %s AND other_column = %s)
             LIMIT %s
             OFFSET %s) AS q;
     """.strip()
@@ -210,7 +210,8 @@ def test_mvt_manager_create_where_clause_with_params(get_conn, orm_filter, mvt_m
     orm_filter.assert_called_once_with(col_1="filter_1", foreign_key=1)
     query_filter.sql_with_params.assert_called_once()
     assert parameterized_where_clause == (
-        "ST_Intersects(ST_Transform(my_schema.my_table.jazzy_geo, 4326), ST_SetSRID(ST_GeomFromText(%s), 4326)) "
+        "ST_Intersects(ST_Transform(my_schema.my_table.jazzy_geo, 4326), ST_Transform(ST_TileEnvelope(%s, %s, %s), 4326)) "
         'AND ("my_schema"."my_table"."col_1" = %s AND "my_schema"."my_table"."foreign_key_id" = %s)'
     )
+
     assert where_clause_parameters == ["filter_1", 1]
