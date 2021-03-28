@@ -4,6 +4,7 @@ from rest_framework_mvt.views import BaseMVTView
 from rest_framework.serializers import ValidationError
 from django.test.client import RequestFactory
 
+
 def test_BaseMVTView__get():
     base_mvt_view = BaseMVTView(geo_col="geom")
     model = MagicMock()
@@ -48,9 +49,7 @@ def test_BaseMVTView__does_not_pass_in_pagination_as_filters():
     model.vector_tiles = vector_tiles
     base_mvt_view.model = model
     request_factory = RequestFactory()
-    request = request_factory.get(
-        "/hello", {"tile": "2/1/1", "limit": 1, "offset": 1}
-    )
+    request = request_factory.get("/hello", {"tile": "2/1/1", "limit": 1, "offset": 1})
 
     response = base_mvt_view.get(request)
 
@@ -61,12 +60,7 @@ def test_BaseMVTView__does_not_pass_in_pagination_as_filters():
     # TODO: fix this assertion.
     # request.GET.dict().pop.assert_called_with("offset", None)
     vector_tiles.intersect.assert_called_with(
-        tilex='1',
-        tiley='1',
-        tilez='2',
-        limit=1,
-        offset=1,
-        filters={},
+        tilex="1", tiley="1", tilez="2", limit=1, offset=1, filters={},
     )
 
 

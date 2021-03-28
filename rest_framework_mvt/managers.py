@@ -47,14 +47,9 @@ class MVTManager(models.Manager):
         with self._get_connection().cursor() as cursor:
             cursor.execute(
                 query,
-                [
-                    str(tilez),
-                    str(tilex),
-                    str(tiley),
-                    str(tilez),
-                    str(tilex),
-                    str(tiley)
-                ] + parameters + [limit, offset]
+                [str(tilez), str(tilex), str(tiley), str(tilez), str(tilex), str(tiley)]
+                + parameters
+                + [limit, offset],
             )
             mvt = cursor.fetchall()[-1][-1]  # should always return one tile on success
         return mvt

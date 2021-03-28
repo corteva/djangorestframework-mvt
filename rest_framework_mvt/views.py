@@ -27,12 +27,12 @@ class BaseMVTView(APIView):
         tilex = tiley = tilez = None
 
         # zxy may come from path or parameters.
-        if 'z' in kwargs and 'x' in kwargs and 'y' in kwargs:
-            tilex = kwargs['x']
-            tiley = kwargs['y']
-            tilez = kwargs['z']
-        if 'tile' in params:
-            zxy = params.pop('tile', '').split('/')
+        if "z" in kwargs and "x" in kwargs and "y" in kwargs:
+            tilex = kwargs["x"]
+            tiley = kwargs["y"]
+            tilez = kwargs["z"]
+        if "tile" in params:
+            zxy = params.pop("tile", "").split("/")
             if len(zxy) == 3:
                 tilez = zxy[0]
                 tilex = zxy[1]
@@ -52,7 +52,7 @@ class BaseMVTView(APIView):
                     tilez=tilez,
                     limit=limit,
                     offset=offset,
-                    filters=params
+                    filters=params,
                 )
                 status = 200 if mvt else 204
             except ValidationError:
