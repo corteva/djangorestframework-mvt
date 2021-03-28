@@ -47,7 +47,14 @@ class MVTManager(models.Manager):
         with self._get_connection().cursor() as cursor:
             cursor.execute(
                 query,
-                [str(xyz[2]), str(xyz[0]), str(xyz[1]), str(xyz[2]), str(xyz[0]), str(xyz[1])]
+                [
+                    str(xyz[2]),
+                    str(xyz[0]),
+                    str(xyz[1]),
+                    str(xyz[2]),
+                    str(xyz[0]),
+                    str(xyz[1]),
+                ]
                 + parameters
                 + [limit, offset],
             )
