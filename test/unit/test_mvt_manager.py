@@ -51,7 +51,7 @@ def test_mvt_manager_intersect__calls__build_query(get_conn, mvt_manager):
     mvt_manager._build_query = MagicMock()
     mvt_manager._build_query.return_value = ("foo", ["bar"])
 
-    mvt_manager.intersect(0, 0, 0, limit=10, offset=7)
+    mvt_manager.intersect([1, 0, 0], limit=10, offset=7)
 
     mvt_manager._build_query.assert_called_once_with(filters={})
 
