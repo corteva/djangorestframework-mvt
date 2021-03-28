@@ -60,9 +60,8 @@ def test_BaseMVTView__does_not_pass_in_pagination_as_filters():
     # TODO: fix this assertion.
     # request.GET.dict().pop.assert_called_with("offset", None)
     vector_tiles.intersect.assert_called_with(
-        tilex="1", tiley="1", tilez="2", limit=1, offset=1, filters={},
+        {"1", "1", "2"}, limit=1, offset=1, filters={},
     )
-
 
 def test_BaseMVTView__validate_paginate():
     limit, offset = BaseMVTView._validate_paginate("10", "7")

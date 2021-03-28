@@ -47,9 +47,7 @@ class BaseMVTView(APIView):
                 limit, offset = None, None
             try:
                 mvt = self.model.vector_tiles.intersect(
-                    tilex=tilex,
-                    tiley=tiley,
-                    tilez=tilez,
+                    {tilex, tiley, tilez},
                     limit=limit,
                     offset=offset,
                     filters=params,

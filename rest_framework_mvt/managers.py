@@ -16,7 +16,7 @@ class MVTManager(models.Manager):
         self.geo_col = geo_col
         self.source_name = source_name
 
-    def intersect(self, tilex, tiley, tilez, limit=-1, offset=0, filters={}):
+    def intersect(self, xyz, limit=-1, offset=0, filters={}):
         """
         Args:
             bbox (str): A string representing a bounding box, e.g., '-90,29,-89,35'.
@@ -47,7 +47,7 @@ class MVTManager(models.Manager):
         with self._get_connection().cursor() as cursor:
             cursor.execute(
                 query,
-                [str(tilez), str(tilex), str(tiley), str(tilez), str(tilex), str(tiley)]
+                [str(xyz[2]), str(xyz[0]), str(xyz[1]), str(xyz[2]), str(xyz[0]), str(xyz[1])]
                 + parameters
                 + [limit, offset],
             )
