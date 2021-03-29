@@ -36,6 +36,7 @@ def test_BaseMVTView__get():
     assert response.data == b""
     assert response.content_type == "application/vnd.mapbox-vector-tile"
 
+
 def test_BaseMVTView__intersects_validation_error_returns_400():
     base_mvt_view = BaseMVTView(geo_col="geom")
     model = MagicMock()
