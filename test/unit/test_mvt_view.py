@@ -23,6 +23,18 @@ def test_BaseMVTView__get():
     assert response.content_type == "application/vnd.mapbox-vector-tile"
     vector_tiles.intersect.assert_called_once()
 
+    # Test path sources tile kwargs.
+    request = request_factory.get("/hello")
+    response = base_mvt_view.get(request, z=2, x=1, y=1)
+    assert response.status_code == 200
+    assert response.data == b"mvt goes here"
+    assert response.content_type == "application/vnd.mapbox-vector-tile"
+
+    # Test no tile arguments.
+    response = base_mvt_view.get(request)
+    assert response.status_code == 400
+    assert response.data == b""
+    assert response.content_type == "application/vnd.mapbox-vector-tile"
 
 def test_BaseMVTView__intersects_validation_error_returns_400():
     base_mvt_view = BaseMVTView(geo_col="geom")
