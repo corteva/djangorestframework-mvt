@@ -66,6 +66,20 @@ The following requests should now be enabled:
 
   GET api/v1/data/example.mvt?tile=1/0/0&my_column=foo&limit=10&offset=10 HTTP/1.1
 
+Alternatively tile x, y and z values may be provided as path keyword arguments:
+
+.. code-block:: python
+
+    from rest_framework_mvt.views import mvt_view_factory
+
+    urlpatterns = [
+        path("api/v1/data/<int:z>/<int:x>/<int:y>/example.mvt", mvt_view_factory(Example)),
+    ]
+
+.. sourcecode:: http
+
+  GET api/v1/data/1/0/0/example.mvt HTTP/1.1
+
 References
 ==========
 - `Mapbox Vector Tile Introduction <https://docs.mapbox.com/vector-tiles/reference/>`_

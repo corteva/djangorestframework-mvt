@@ -1,7 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
-from rest_framework_gis.filters import TMSTileFilter
 from rest_framework_mvt.renderers import BinaryRenderer
 from rest_framework_mvt.schemas import MVT_SCHEMA
 
@@ -25,17 +24,33 @@ class BaseMVTView(APIView):
             :py:class:`rest_framework.response.Response`:  Standard DRF response object
         """
         params = request.GET.dict()
-        if params.pop("tile", None) is not None:
+        tilex = tiley = tilez = None
+
+        # zxy may come from path or parameters.
+        if "z" in kwargs and "x" in kwargs and "y" in kwargs:
+            tilex = kwargs["x"]
+            tiley = kwargs["y"]
+            tilez = kwargs["z"]
+        if "tile" in params:
+            zxy = params.pop("tile", "").split("/")
+            if len(zxy) == 3:
+                tilez = zxy[0]
+                tilex = zxy[1]
+                tiley = zxy[2]
+
+        if tilez and tilex and tiley:
             try:
                 limit, offset = self._validate_paginate(
                     params.pop("limit", None), params.pop("offset", None)
                 )
             except ValidationError:
                 limit, offset = None, None
-            bbox = TMSTileFilter().get_filter_bbox(request)
             try:
                 mvt = self.model.vector_tiles.intersect(
-                    bbox=bbox, limit=limit, offset=offset, filters=params
+                    [tilex, tiley, tilez],
+                    limit=limit,
+                    offset=offset,
+                    filters=params,
                 )
                 status = 200 if mvt else 204
             except ValidationError:
