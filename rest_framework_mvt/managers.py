@@ -16,7 +16,7 @@ class MVTManager(models.Manager):
         self.geo_col = geo_col
         self.source_name = source_name
 
-    def intersect(self, bbox="", limit=-1, offset=0, filters={}):
+    def intersect(self, bbox="", bufferbox="", limit=-1, offset=0, filters={}):
         """
         Args:
             bbox (str): A string representing a bounding box, e.g., '-90,29,-89,35'.
@@ -45,7 +45,7 @@ class MVTManager(models.Manager):
         limit = "ALL" if limit == -1 else limit
         query, parameters = self._build_query(filters=filters)
         with self._get_connection().cursor() as cursor:
-            cursor.execute(query, [str(bbox), str(bbox)] + parameters + [limit, offset])
+            cursor.execute(query, [str(bbox), str(bufferbox)] + parameters + [limit, offset])
             mvt = cursor.fetchall()[-1][-1]  # should always return one tile on success
         return mvt
 
