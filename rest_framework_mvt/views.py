@@ -33,9 +33,11 @@ class BaseMVTView(APIView):
             except ValidationError:
                 limit, offset = None, None
             bbox = TMSTileFilter().get_filter_bbox(request)
+            width=bbox.extent[2]-bbox.extent[0]
+            bufferbox=bbox.buffer(width/20)
             try:
                 mvt = self.model.vector_tiles.intersect(
-                    bbox=bbox, limit=limit, offset=offset, filters=params
+                    bbox=bbox, bufferbox=bufferbox, limit=limit, offset=offset, filters=params
                 )
                 status = 200 if mvt else 204
             except ValidationError:
