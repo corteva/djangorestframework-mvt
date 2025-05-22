@@ -6,6 +6,25 @@ from rest_framework_mvt.renderers import BinaryRenderer
 from rest_framework_mvt.schemas import MVT_SCHEMA
 
 
+def is_bool_or_null(value: str):
+    if value in ("True", "true", "y", "yes"):
+        return True
+    if value in ("False", "false", "n", "no"):
+        return False
+    if value in ("None", "null", "NULL", ""):
+        return None
+    return value
+
+
+def autocast(value: str):
+    for fn in (is_bool_or_null, int, float):
+        try:
+            return fn(value)
+        except ValueError:
+            pass
+    return value
+
+
 class BaseMVTView(APIView):
     """
     Base view for serving a model as a Mapbox Vector Tile given X/Y/Z tile constraints.
@@ -25,6 +44,10 @@ class BaseMVTView(APIView):
             :py:class:`rest_framework.response.Response`:  Standard DRF response object
         """
         params = request.GET.dict()
+
+        for key, value in params.items():
+            params[key] = autocast(value)
+
         if params.pop("tile", None) is not None:
             try:
                 limit, offset = self._validate_paginate(
