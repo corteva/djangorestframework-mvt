@@ -9,6 +9,6 @@ max-line-length=100
 [MESSAGES CONTROL]
 disable = too-few-public-methods,
           missing-docstring,
-          bad-continuation,
           dangerous-default-value,
           protected-access,
+          line-too-long,
