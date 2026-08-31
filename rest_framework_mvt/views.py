@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 from rest_framework_gis.filters import TMSTileFilter
 from rest_framework_mvt.renderers import BinaryRenderer
-from rest_framework_mvt.schemas import MVT_SCHEMA
 
 
 class BaseMVTView(APIView):
@@ -14,8 +14,32 @@ class BaseMVTView(APIView):
     model = None
     geom_col = None
     renderer_classes = (BinaryRenderer,)
-    schema = MVT_SCHEMA
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "tile",
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.QUERY,
+                required=True,
+                description="TMS coordinates of the requested tile. The format should be tile=z/x/y",
+            ),
+            OpenApiParameter(
+                "limit",
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.QUERY,
+                required=False,
+                description="Number of results to return per page.",
+            ),
+            OpenApiParameter(
+                "offset",
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.QUERY,
+                required=False,
+                description="The initial index from which to return the results.",
+            ),
+        ],
+    )
     # pylint: disable=unused-argument
     def get(self, request, *args, **kwargs):
         """
