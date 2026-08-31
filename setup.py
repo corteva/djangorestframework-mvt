@@ -43,6 +43,7 @@ setup(
     packages=find_packages(include=["rest_framework_mvt*"]),
     extras_require={
         "dev": [
+            "django<6.1",  # https://github.com/encode/django-rest-framework/discussions/10017
             "black",
             "coveralls",
             "mock",
