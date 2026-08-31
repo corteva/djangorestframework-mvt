@@ -7,6 +7,6 @@ class BinaryRenderer(BaseRenderer):
     charset = None
     render_style = "binary"
 
-    # pylint: disable=no-self-use,unused-argument
+    # pylint: disable=unused-argument
     def render(self, data, accepted_media_type=None, renderer_context=None):
         return data
