@@ -16,13 +16,14 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: ["3.12", "3.13", "3.14"]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
       - name: Build
         shell: bash
         run: |
+            sudo apt-get update -y
             sudo add-apt-repository -y ppa:ubuntugis/ppa
             sudo apt-get update -y
             sudo apt install -y gdal-bin python3-gdal
