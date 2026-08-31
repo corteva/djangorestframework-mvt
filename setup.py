@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-from rest_framework_mvt import VERSION
+from rest_framework_mvt import __version__
 
 
 def readme():
@@ -55,7 +55,7 @@ setup(
         ]
     },
     url="https://github.com/corteva/djangorestframework-mvt",
-    version=VERSION,
+    version=__version__,
     zip_safe=False,
     project_urls={
         "Documentation": "https://corteva.github.io/djangorestframework-mvt",
