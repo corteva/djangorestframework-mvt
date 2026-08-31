@@ -30,7 +30,7 @@ setup(
     """,
     include_package_data=True,
     install_requires=[
-        "coreapi>=2.3",
+        "drf_spectacular",
         "django>=2.2.9",
         "djangorestframework>=3.9",
         "djangorestframework-gis>=0.14",
